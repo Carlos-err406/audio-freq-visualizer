@@ -41,5 +41,3 @@ function drawLine(color) {
     ctx.fillRect(0, canvas.height / 2, canvas.width, defaultHeight);
   }
 }
-
-// Request next frame
