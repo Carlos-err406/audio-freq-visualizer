@@ -2,13 +2,13 @@
 let audioContext;
 
 /** @type {AnalyserNode} */
-let analyser;
+export let analyser;
 
 /** @type {AudioNode} */
 let sourceNode;
 
 /** @type {Uint8Array} */
-let dataArray;
+export let dataArray;
 
 /** @type {MediaStream} */
 let mediaStream;
@@ -20,7 +20,7 @@ let fileSourceNode;
 let currentMode = "file";
 
 /** @type {HTMLAudioElement} */
-const audio = document.querySelector("audio");
+export const audio = document.querySelector("audio");
 
 function initAudioContext() {
   if (!audioContext || audioContext.state === "closed") {
@@ -95,6 +95,7 @@ async function switchAudioMode(mode) {
   try {
     if (mode === "file") {
       await setupFileAudio();
+      audio.paused ? audio.play() : audio.pause();
     } else if (mode === "mic") {
       await setupMicAudio();
     }
@@ -113,8 +114,8 @@ function initOnInteraction() {
 }
 
 // Initialize on first interaction
-document.addEventListener('click', initOnInteraction);
-document.addEventListener('keydown', (e) => {
+document.addEventListener("click", initOnInteraction);
+document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase() === "f") {
     initOnInteraction();
     switchAudioMode("file");

@@ -1,3 +1,2 @@
-document.addEventListener("click", () => {
-  audio.paused ? audio.play() : audio.pause();
-});
+import { draw } from "./lib/draw";
+draw();

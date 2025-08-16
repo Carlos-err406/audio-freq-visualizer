@@ -1,8 +1,8 @@
 /** @type {HTMLCanvasElement} */
-const canvas = document.querySelector("canvas");
+export const canvas = document.querySelector("canvas");
 
 /** @type {CanvasRenderingContext2D} */
-const ctx = canvas.getContext("2d");
+export const ctx = canvas.getContext("2d");
 
 /**
  * Handles canvas resize events
@@ -16,7 +16,6 @@ function handleCanvasResize() {
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, newWidth, newHeight);
-//   draw();
 }
 
 handleCanvasResize();
