@@ -7,7 +7,7 @@ export let analyser;
 /** @type {AudioNode} */
 let sourceNode;
 
-/** @type {Uint8Array} */
+/** @type {Uint8Array|undefined} */
 export let dataArray;
 
 /** @type {MediaStream} */
