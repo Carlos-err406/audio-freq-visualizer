@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  base: '/audio-freq-visualizer/',
   server: {
     cors: {
       methods: ["GET"],
@@ -8,4 +9,8 @@ export default defineConfig({
     allowedHosts: ["localhost", ".github.io"],
     hmr: true,
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true
+  }
 });
