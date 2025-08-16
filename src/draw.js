@@ -1,32 +1,8 @@
 import { analyser, dataArray } from "./audio.js";
 import { canvas, ctx } from "./canvas.js";
 
-/**
- * Sets up the canvas for high DPI displays with enhanced smoothing
- * Ensures proper scaling and sizing for optimal visual quality
- */
-function setupHighDPICanvas() {
-  // Get the container dimensions
-  const container = canvas.parentElement;
-  const containerWidth = container ? container.clientWidth : window.innerWidth;
-  const containerHeight = container
-    ? container.clientHeight
-    : window.innerHeight;
-
-  // Use device pixel ratio for better quality, but don't scale too much
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-  // Set the canvas CSS size to match container
-  canvas.style.width = containerWidth + "px";
-  canvas.style.height = containerHeight + "px";
-
-  // Set the canvas drawing buffer size with DPI scaling for higher resolution
-  canvas.width = containerWidth * dpr;
-  canvas.height = containerHeight * dpr;
-
-  // Scale all drawing operations by the DPI scaling factor
-  ctx.scale(dpr, dpr);
-
+// Set up canvas rendering options for smoother lines
+function setupCanvasRendering() {
   // Enable image smoothing for anti-aliased lines
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
@@ -37,10 +13,7 @@ function setupHighDPICanvas() {
 }
 
 // Call this function once at startup
-setupHighDPICanvas();
-
-// Listen for resize events to maintain high DPI
-window.addEventListener("resize", setupHighDPICanvas);
+setupCanvasRendering();
 
 /** @type {number} */
 const defaultHeight = 20; // Increased default height for better visibility
