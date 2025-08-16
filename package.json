@@ -9,12 +9,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow npm"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.7.1",
+  "keywords": [
+    "audio frequency visualization"
+  ],
+  "author": "Carlos Daniel Vilaseca",
+  "license": "MIT",
   "devDependencies": {
     "prettier": "^3.6.2",
     "vite": "^7.1.2"
