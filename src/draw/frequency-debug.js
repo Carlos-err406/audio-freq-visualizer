@@ -175,7 +175,7 @@ function drawBandDivider(binIndex, binCount, top, height, label) {
 }
 
 // State to control whether frequency debug is shown
-export let showFrequencyDebug = true;
+export let showFrequencyDebug = false;
 document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase() === "d") {
     showFrequencyDebug = !showFrequencyDebug;
