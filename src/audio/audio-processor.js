@@ -56,7 +56,6 @@ export class AudioProcessor {
       });
       this.sourceNode = audioCtx.createMediaStreamSource(this.mediaStream);
       this.sourceNode.connect(this.analyser);
-      this.analyser.connect(audioCtx.destination);
 
       if (audioCtx.state === "suspended") {
         await audioCtx.resume();
