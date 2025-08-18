@@ -4,8 +4,7 @@ import { ctx, height, width } from "../canvas";
 export function drawInstructions() {
   ctx.textAlign = "center";
   ctx.fillStyle = "white";
-  if (isInitialized()) ctx.font = "12px monospace, sans-serif";
-  else ctx.font = "16px monospace, sans-serif";
+  ctx.font = "16px monospace, sans-serif";
   // Draw text with anti-aliasing
   ctx.fillText(
     "Click or Tap the screen to toggle mic 🎤",

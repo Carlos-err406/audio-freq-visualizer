@@ -1,4 +1,6 @@
 const BACKGROUND = "#000000";
+// DPI scaling factor - increase for higher resolution
+export const DPI_SCALE = 5;
 export let width = window.innerWidth;
 export let height = window.innerHeight;
 
@@ -17,8 +19,11 @@ function handleCanvasResize() {
   width = window.innerWidth;
 
   // Set canvas dimensions to match window
-  canvas.height = height;
-  canvas.width = width;
+
+  canvas.height = height * DPI_SCALE;
+  canvas.width = width * DPI_SCALE;
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
 
   // Reset canvas with black background
   ctx.fillStyle = BACKGROUND;
@@ -29,15 +34,30 @@ function handleCanvasResize() {
   ctx.imageSmoothingQuality = "high";
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
+
+  // Reset transformation matrix before applying scale to prevent cumulative scaling
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  // Scale all drawing operations to match the DPI scaling
+  ctx.scale(DPI_SCALE, DPI_SCALE);
 }
 
 /**
  * Clears the canvas and fills with background color
  */
 export function clearCanvas() {
+  // Save the current transformation
+  ctx.save();
+
+  // Reset the transformation to clear the entire canvas
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = BACKGROUND; // Pure black background
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Restore the scaling transformation
+  ctx.restore();
 }
 
 handleCanvasResize();
