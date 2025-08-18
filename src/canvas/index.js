@@ -1,3 +1,7 @@
+const BACKGROUND = "#000000";
+export let width = window.innerWidth;
+export let height = window.innerHeight;
+
 /** @type {HTMLCanvasElement} */
 export const canvas = document.querySelector("canvas");
 
@@ -9,22 +13,31 @@ export const ctx = canvas.getContext("2d");
  * Uses window dimensions for better mobile compatibility
  */
 function handleCanvasResize() {
-  const newHeight = window.innerHeight;
-  const newWidth = window.innerWidth;
+  height = window.innerHeight;
+  width = window.innerWidth;
 
   // Set canvas dimensions to match window
-  canvas.height = newHeight;
-  canvas.width = newWidth;
+  canvas.height = height;
+  canvas.width = width;
 
   // Reset canvas with black background
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, newWidth, newHeight);
-  
+  ctx.fillStyle = BACKGROUND;
+  ctx.fillRect(0, 0, width, height);
+
   // Set up basic rendering options
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
+}
+
+/**
+ * Clears the canvas and fills with background color
+ */
+export function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = BACKGROUND; // Pure black background
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 handleCanvasResize();

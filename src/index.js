@@ -1,2 +1,2 @@
-import { draw } from "./draw";
+import { draw } from "./draw/index";
 draw();
