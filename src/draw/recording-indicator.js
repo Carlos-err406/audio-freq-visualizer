@@ -1,4 +1,4 @@
-import { isMicrophoneActive } from "../audio";
+import { audioProcessor } from "../audio";
 import { ctx } from "../canvas";
 import { Time } from "../utils/time";
 
@@ -8,7 +8,7 @@ export function drawRecordingIndicator() {
   const x = 20;
   const y = 15;
 
-  if (isMicrophoneActive()) {
+  if (audioProcessor.isMicActive) {
     time.resume();
     // Draw a pulsing red circle to indicate recording
     const radius = 5 + Math.sin(time.value * 5); // Pulsing effect using sine wave

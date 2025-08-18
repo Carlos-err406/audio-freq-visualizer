@@ -1,7 +1,8 @@
-import { getAnalyser, getAudioData } from "../audio";
+import { audioProcessor } from "../audio";
 import { clearCanvas, ctx, height, width } from "../canvas";
 import { Time } from "../utils/time";
 import { BANDS, getBandData } from "./bands";
+import { drawFrequencyDebug, showFrequencyDebug } from "./frequency-debug";
 import { drawInstructions } from "./instructions";
 import { drawRecordingIndicator } from "./recording-indicator";
 const drawTime = new Time(0.01);
@@ -21,6 +22,11 @@ export function draw() {
   drawRecordingIndicator();
   drawVisualization();
 
+  // Draw frequency debug information if audio is active and debug is enabled
+  if (audioProcessor && showFrequencyDebug) {
+    drawFrequencyDebug(audioProcessor);
+  }
+
   // Schedule the next frame
   requestAnimationFrame(draw);
 }
@@ -29,9 +35,9 @@ export function draw() {
  * Draws the audio visualization based on current state
  */
 function drawVisualization() {
-  const analyser = getAnalyser();
-  const audioData = getAudioData();
-  
+  const analyser = audioProcessor.analyser;
+  const audioData = audioProcessor.getAudioData(); // Call getAudioData() to update the dataArray with current frequency data
+
   if (analyser && audioData) {
     drawFrequencyBands(audioData);
   }

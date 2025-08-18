@@ -1,13 +1,23 @@
 import { AudioProcessor } from "./audio-processor";
-import { InputHandler } from "./input-handler";
 
-const audioProcessor = new AudioProcessor();
-const inputHandler = new InputHandler(audioProcessor);
-inputHandler.setupEventListeners();
+export const audioProcessor = new AudioProcessor();
+
+document.addEventListener("click", () => {
+  if (!audioProcessor.isInitialized) {
+    audioProcessor.initOnInteraction();
+  }
+  audioProcessor
+    .toggleMicrophone()
+    .catch((err) => console.error("Error toggling microphone:", err));
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && audioProcessor.isMicActive) {
+    audioProcessor
+      .toggleMicrophone()
+      .catch((err) => console.error("Error toggling microphone:", err));
+  }
+});
 
 // Export public API
-export const toggleMicrophone = () => audioProcessor.toggleMicrophone();
-export const getAudioData = () => audioProcessor.getAudioData();
-export const isMicrophoneActive = () => audioProcessor.isMicActive;
-export const getAnalyser = () => audioProcessor.analyser;
 export const isInitialized = () => !!audioProcessor.analyser;

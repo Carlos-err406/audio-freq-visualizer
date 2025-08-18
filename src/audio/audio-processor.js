@@ -46,7 +46,8 @@ export class AudioProcessor {
     // Create analyser if needed
     if (!this.analyser) {
       this.analyser = audioCtx.createAnalyser();
-      this.analyser.fftSize = 64;
+      this.analyser.fftSize = 2048; // Significantly increased for much higher frequency resolution
+      this.analyser.smoothingTimeConstant = 0.3; // Lower value (default is 0.8) for more responsive visualization
       this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
     }
 
@@ -56,7 +57,6 @@ export class AudioProcessor {
       });
       this.sourceNode = audioCtx.createMediaStreamSource(this.mediaStream);
       this.sourceNode.connect(this.analyser);
-
       if (audioCtx.state === "suspended") {
         await audioCtx.resume();
       }

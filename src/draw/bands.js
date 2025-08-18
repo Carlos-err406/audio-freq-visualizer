@@ -17,31 +17,31 @@ export const BANDS = [
     name: "high",
     color: "rgba(0, 255, 255, 0.7)",
     glowColor: "rgba(0, 255, 255, 0.9)",
-    range: [23, 31],
+    range: [600, 1023], // High frequencies (approximately 12kHz-20kHz)
   },
   {
     name: "mid-high",
     color: "rgba(0, 191, 255, 0.7)",
     glowColor: "rgba(0, 191, 255, 0.9)",
-    range: [16, 22],
+    range: [300, 599], // Mid-high frequencies (approximately 6kHz-12kHz)
   },
   {
     name: "mid",
     color: "rgba(255, 20, 145, 0.7)",
     glowColor: "rgba(255, 20, 147, 0.9)",
-    range: [9, 15],
+    range: [100, 299], // Mid frequencies (approximately 2kHz-6kHz)
   },
   {
     name: "mid-low",
     color: "rgba(255, 0, 255, 0.7)",
     glowColor: "rgba(255, 0, 255, 0.9)",
-    range: [4, 8],
+    range: [20, 99], // Mid-low frequencies (approximately 400Hz-2kHz)
   },
   {
     name: "low",
     color: "rgba(137, 43, 226, 0.7)",
     glowColor: "rgba(137, 43, 226, 0.9)",
-    range: [0, 3],
+    range: [0, 19], // Low frequencies (approximately 20Hz-400Hz)
   },
 ];
 
