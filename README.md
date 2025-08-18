@@ -1,4 +1,4 @@
-![Banner](./screenshots/1.png)
+![Banner](./screenshots/1.gif)
 
 # Audio Frequency Visualizer
 
