@@ -1,5 +1,5 @@
 import { audioProcessor } from "../audio";
-import { clearCanvas, ctx, height, width } from "../canvas";
+import { clearCanvas, ctx, size } from "../canvas";
 import { Time } from "../utils/time";
 import { BANDS, getBandData } from "./bands";
 import { drawFrequencyDebug, showFrequencyDebug } from "./frequency-debug";
@@ -129,13 +129,13 @@ function drawSineWave(index, frequency, amplitude) {
   ctx.beginPath();
 
   // Common vertical center for all lines
-  const verticalCenter = height / 2;
+  const verticalCenter = size.height / 2;
 
   // Start at the left edge - all lines start at the same point
   ctx.moveTo(0, verticalCenter);
 
   // Draw the sine wave points
-  for (let x = 0; x < width; x++) {
+  for (let x = 0; x < size.width; x++) {
     // Calculate the y position for this point
     const y = calculateWavePoint(
       x,
@@ -162,7 +162,7 @@ function drawSineWave(index, frequency, amplitude) {
  */
 function calculateWavePoint(x, verticalCenter, index, frequency, amplitude) {
   // Calculate position relative to center (0 to 1, where 0.5 is center)
-  const relativePos = x / width;
+  const relativePos = x / size.width;
 
   // Create an envelope that peaks in the center and is flat at the edges
   // Using a modified bell curve (Gaussian function)
@@ -174,7 +174,7 @@ function calculateWavePoint(x, verticalCenter, index, frequency, amplitude) {
   // Calculate the sine wave with the envelope
   return (
     verticalCenter +
-    Math.sin((x * (Math.PI * 2 * frequency)) / width + phase) *
+    Math.sin((x * (Math.PI * 2 * frequency)) / size.width + phase) *
       amplitude *
       envelope
   );

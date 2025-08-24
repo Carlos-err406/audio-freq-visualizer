@@ -1,8 +1,25 @@
 const BACKGROUND = "#000000";
 // DPI scaling factor - increase for higher resolution
-export const DPI_SCALE = 5;
-export let width = window.innerWidth;
-export let height = window.innerHeight;
+export const DPI_SCALE = 2;
+
+export const size = {
+  /** the window.innerWidth */
+  get width() {
+    return window.innerWidth;
+  },
+  /** the window.innerHeight */
+  get height() {
+    return window.innerHeight;
+  },
+  /** the window.innerWidth * DPI_SCALE */
+  get dpi_width() {
+    return this.width * DPI_SCALE;
+  },
+  /** the window.innerHeight * DPI_SCALE */
+  get dpi_height() {
+    return this.height * DPI_SCALE;
+  },
+};
 
 /** @type {HTMLCanvasElement} */
 export const canvas = document.querySelector("canvas");
@@ -15,49 +32,32 @@ export const ctx = canvas.getContext("2d");
  * Uses window dimensions for better mobile compatibility
  */
 function handleCanvasResize() {
-  height = window.innerHeight;
-  width = window.innerWidth;
+  ctx.setTransform(1, 0, 0, 1, 0, 0); // reset
 
-  // Set canvas dimensions to match window
+  canvas.width = size.dpi_width;
+  canvas.height = size.dpi_height;
+  canvas.style.width = `${size.width}px`;
+  canvas.style.height = `${size.height}px`;
 
-  canvas.height = height * DPI_SCALE;
-  canvas.width = width * DPI_SCALE;
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-
-  // Reset canvas with black background
   ctx.fillStyle = BACKGROUND;
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, size.dpi_width, size.dpi_height); // cover full area
 
-  // Set up basic rendering options
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   ctx.lineJoin = "round";
   ctx.lineCap = "round";
 
-  // Reset transformation matrix before applying scale to prevent cumulative scaling
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-  // Scale all drawing operations to match the DPI scaling
-  ctx.scale(DPI_SCALE, DPI_SCALE);
+  ctx.scale(DPI_SCALE, DPI_SCALE); // reapply scaling
 }
 
 /**
  * Clears the canvas and fills with background color
  */
 export function clearCanvas() {
-  // Save the current transformation
-  ctx.save();
-
-  // Reset the transformation to clear the entire canvas
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = BACKGROUND; // Pure black background
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Restore the scaling transformation
-  ctx.restore();
+  ctx.fillStyle = BACKGROUND;
+  ctx.fillRect(0, 0, size.dpi_width, size.dpi_height);
+  ctx.setTransform(DPI_SCALE, 0, 0, DPI_SCALE, 0, 0);
 }
 
 handleCanvasResize();

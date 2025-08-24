@@ -1,5 +1,5 @@
 import { isInitialized } from "../audio";
-import { ctx, height, width } from "../canvas";
+import { ctx, size } from "../canvas";
 
 export function drawInstructions() {
   ctx.textAlign = "center";
@@ -8,7 +8,7 @@ export function drawInstructions() {
   // Draw text with anti-aliasing
   ctx.fillText(
     "Click or Tap the screen to toggle mic 🎤",
-    width / 2,
-    isInitialized() ? 20 : height / 2,
+    size.width / 2,
+    isInitialized() ? 20 : size.height / 2,
   );
 }

@@ -1,4 +1,4 @@
-import { ctx, height, width } from "../canvas";
+import { ctx, size } from "../canvas";
 
 /**
  * Draws debug information about frequency data on the canvas
@@ -56,7 +56,7 @@ export function drawFrequencyDebug(audioProcessor) {
   ctx.textAlign = "left";
 
   // Draw frequency range information
-  const startY = height - 190;
+  const startY = size.height - 190;
   const lineHeight = 20;
 
   ctx.fillText(`Frequency Ranges:`, 20, startY);
@@ -87,7 +87,7 @@ export function drawFrequencyDebug(audioProcessor) {
   );
 
   // Draw current maximum values
-  const valuesStartX = width / 2;
+  const valuesStartX = size.width / 2;
   ctx.fillText(`Current Maximum Values:`, valuesStartX, startY);
   ctx.fillText(`High: ${highMax}`, valuesStartX, startY + lineHeight);
   ctx.fillText(
@@ -110,11 +110,11 @@ export function drawFrequencyDebug(audioProcessor) {
  */
 function drawMiniSpectrum(dataArray, binCount) {
   const spectrumHeight = 60;
-  const spectrumTop = height - spectrumHeight - 10;
-  const barWidth = width / binCount;
+  const spectrumTop = size.height - spectrumHeight - 10;
+  const barWidth = size.dpi_widthwidth / binCount;
 
   ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-  ctx.fillRect(0, spectrumTop, width, spectrumHeight);
+  ctx.fillRect(0, spectrumTop, size.width, spectrumHeight);
 
   // Draw frequency spectrum
   for (let i = 0; i < binCount; i++) {
@@ -159,11 +159,11 @@ function drawMiniSpectrum(dataArray, binCount) {
  * @param {number} binIndex - The bin index where the band starts
  * @param {number} binCount - The total number of bins
  * @param {number} top - The top position of the spectrum visualization
- * @param {number} height - The height of the spectrum visualization
+ * @param {number} height - The canvas.height of the spectrum visualization
  * @param {string} label - The label for the band
  */
 function drawBandDivider(binIndex, binCount, top, height, label) {
-  const x = 20 + (binIndex / binCount) * width;
+  const x = 20 + (binIndex / binCount) * size.width;
 
   ctx.beginPath();
   ctx.moveTo(x, top);
