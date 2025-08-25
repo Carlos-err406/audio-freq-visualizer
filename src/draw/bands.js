@@ -1,5 +1,5 @@
 /** @type {number} */
-const waveThickness = 20;
+const clusterThickness = 70;
 
 /**
  * Frequency bands configuration
@@ -75,7 +75,7 @@ export function getBandData(band, index, dataArray, drawTime) {
   const avgFrequency = sum / (safeEnd - safeStart + 1);
 
   // Calculate amplitude based on average frequency
-  const amplitude = waveThickness + (avgFrequency / 255) * 100;
+  const amplitude = clusterThickness + (avgFrequency / 255) * 100;
 
   // Calculate frequency (number of waves) based on the band
   // Higher frequency bands get more waves
