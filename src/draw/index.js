@@ -4,7 +4,7 @@ import { Time } from "../utils/time";
 import { BANDS, getBandData } from "./bands";
 import { drawFrequencyDebug, showFrequencyDebug } from "./frequency-debug";
 import { drawInstructions } from "./instructions";
-import { drawRecordingIndicator } from "./recording-indicator";
+import { drawIndicator } from "./recording-indicator";
 const drawTime = new Time(0.01);
 
 /**
@@ -19,7 +19,7 @@ export function draw() {
   clearCanvas();
 
   drawInstructions();
-  drawRecordingIndicator();
+  drawIndicator();
   drawVisualization();
 
   // Draw frequency debug information if audio is active and debug is enabled

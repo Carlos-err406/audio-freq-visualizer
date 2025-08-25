@@ -16,6 +16,7 @@ export default [
         document: "readonly",
         navigator: "readonly",
         console: "readonly",
+        alert: "readonly",
         fetch: "readonly",
         setTimeout: "readonly",
         clearTimeout: "readonly",

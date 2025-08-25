@@ -1,5 +1,5 @@
 /**
- * Handles audio processing and microphone input
+ * Handles audio processing, microphone input, and audio file playback
  */
 export class AudioProcessor {
   constructor() {
@@ -23,6 +23,15 @@ export class AudioProcessor {
 
     /** @type {boolean} */
     this.isInitialized = false;
+
+    /** @type {boolean} */
+    this.isFileActive = false;
+
+    /** @type {AudioBufferSourceNode|null} */
+    this.audioFileSource = null;
+
+    /** @type {string|null} */
+    this.currentFileName = null;
   }
 
   /**
@@ -72,9 +81,15 @@ export class AudioProcessor {
   cleanupAudio() {
     if (this.sourceNode) {
       this.sourceNode.disconnect();
+      this.sourceNode = null;
     }
 
-    if (this.analyser) {
+    if (this.audioFileSource) {
+      this.audioFileSource.disconnect();
+      this.audioFileSource = null;
+    }
+
+    if (this.analyser && this.analyser.numberOfInputs > 0) {
       this.analyser.disconnect();
     }
 
@@ -82,6 +97,9 @@ export class AudioProcessor {
       this.mediaStream.getTracks().forEach((track) => track.stop());
       this.mediaStream = null;
     }
+
+    this.isFileActive = false;
+    this.currentFileName = null;
 
     // Don't close audioContext - we'll reuse it
   }
@@ -91,6 +109,11 @@ export class AudioProcessor {
    * @returns {Promise<boolean>} Promise resolving to the new microphone state
    */
   async toggleMicrophone() {
+    // If an audio file is currently playing, stop it
+    if (this.isFileActive) {
+      this.cleanupAudio();
+    }
+
     if (this.isMicActive) {
       this.cleanupAudio();
       this.isMicActive = false;
@@ -126,5 +149,84 @@ export class AudioProcessor {
       return this.dataArray;
     }
     return null;
+  }
+
+  /**
+   * Process an audio file and use it as the audio source
+   * @param {File} file - The audio file to process
+   * @returns {Promise<void>}
+   */
+  async processAudioFile(file) {
+    try {
+      // Initialize audio context if needed
+      const audioCtx = this.initAudioContext();
+
+      // If microphone is active, turn it off
+      if (this.isMicActive) {
+        this.cleanupAudio();
+        this.isMicActive = false;
+      }
+
+      // Clean up any previous audio file
+      if (this.isFileActive) {
+        this.cleanupAudio();
+      }
+
+      // Create analyser if needed
+      if (!this.analyser) {
+        this.analyser = audioCtx.createAnalyser();
+        this.analyser.fftSize = 2048;
+        this.analyser.smoothingTimeConstant = 0.3;
+        this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+      }
+
+      // Read the file
+      const arrayBuffer = await file.arrayBuffer();
+      const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+      // Create a source node from the audio buffer
+      this.audioFileSource = audioCtx.createBufferSource();
+      this.audioFileSource.buffer = audioBuffer;
+
+      // Connect the source to the analyser
+      this.audioFileSource.connect(this.analyser);
+
+      // Set up event for when the audio finishes playing
+      this.audioFileSource.onended = () => {
+        console.log("Audio file playback ended");
+        this.cleanupAudio();
+      };
+
+      // Start playback
+      if (audioCtx.state === "suspended") {
+        await audioCtx.resume();
+      }
+
+      this.audioFileSource.start(0);
+      this.isFileActive = true;
+      this.currentFileName = file.name;
+
+      console.log(`Playing audio file: ${file.name}`);
+    } catch (err) {
+      console.error("Error processing audio file:", err);
+      this.cleanupAudio();
+      throw err;
+    }
+  }
+
+  /**
+   * Check if audio is currently active (either mic or file)
+   * @returns {boolean} True if audio is active
+   */
+  isAudioActive() {
+    return this.isMicActive || this.isFileActive;
+  }
+
+  /**
+   * Get the name of the currently playing audio file
+   * @returns {string|null} The file name or null if no file is playing
+   */
+  getCurrentFileName() {
+    return this.currentFileName;
   }
 }
